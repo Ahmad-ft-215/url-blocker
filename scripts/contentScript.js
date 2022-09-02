@@ -1,18 +1,19 @@
 function CloseTab() {
-    alert("This Website is completely blocked for 24 hours. Click Ok to close Tab")
-    chrome.runtime.sendMessage({ CloseMe: true })
+  alert(
+    "This Website is completely blocked for 24 hours. Click Ok to close Tab"
+  );
+  chrome.runtime.sendMessage({ CloseMe: true });
 }
 
 chrome.runtime.onMessage.addListener((message, sender) => {
-    if(message.from === "popup" && message.subject === "startTimer") {
-
-        var hrs = 0;
-        var min = 0;
-        var sec = 5;
-        var divElement = document.createElement("div")
-        divElement.innerHTML = `
+  if (message.from === "popup" && message.subject === "startTimer") {
+    var hrs = 0;
+    var min = 0;
+    var sec = 5;
+    var divElement = document.createElement("div");
+    divElement.innerHTML = `
             <div class="STAYPtopItem">
-                <h1>Stay Productive</h1>
+                <h1>Web Blocker</h1>
                 <div class="STAYPtopItemMain">
                     <div class="STAYPInfo">
                         <p>You are currently on :</p>
@@ -41,26 +42,28 @@ chrome.runtime.onMessage.addListener((message, sender) => {
                     </div>
                 </div>
             </div>`;
-        document.body.prepend(divElement)
+    document.body.prepend(divElement);
 
-        setInterval(() => {
-            if(sec >= 1) {
-                sec = sec - 1
-                let STAYPsec = document.getElementById("STAYPsec")
-                STAYPsec.innerText = ("0" + sec).slice(-2)
-            }
-            else{
-                CloseTab()
-            }
-        }, 1000);
-
-    }
-})
+    setInterval(() => {
+      if (sec >= 1) {
+        sec = sec - 1;
+        let STAYPsec = document.getElementById("STAYPsec");
+        STAYPsec.innerText = ("0" + sec).slice(-2);
+      } else {
+        CloseTab();
+      }
+    }, 1000);
+  }
+});
 
 chrome.storage.local.get("BlockedUrls", (data) => {
-    if (data.BlockedUrls !== undefined) {
-        if (data.BlockedUrls.some((e) => e.url === window.location.hostname && e.status === "BLOCKED")) {
-            CloseTab()
-        }
+  if (data.BlockedUrls !== undefined) {
+    if (
+      data.BlockedUrls.some(
+        (e) => e.url === window.location.hostname && e.status === "BLOCKED"
+      )
+    ) {
+      CloseTab();
     }
-})
+  }
+});
