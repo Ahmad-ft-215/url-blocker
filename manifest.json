@@ -1,7 +1,8 @@
 {
     "name": "Web Blocker",
+    
     "description": "A Chrome Extension for Website Blocker",
-    "version": "0.0.1",
+    "version": "3.0.1",
     "manifest_version": 3,
     "action": {
         "default_popup": "./popup.html"
